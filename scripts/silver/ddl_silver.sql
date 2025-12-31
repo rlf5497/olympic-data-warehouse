@@ -68,18 +68,18 @@ CREATE TABLE silver.olympics_bios (
 DROP TABLE IF EXISTS silver.olympics_bios_locs;
 
 CREATE TABLE silver.olympics_bios_locs (
-	athlete_id				  	INT,
-	name					      	VARCHAR(55),
-	born_date				    	DATE,
-	born_city				    	VARCHAR(55),
-	born_region				  	VARCHAR(40),
-	noc						      	VARCHAR(80),
-	height_cm				    	NUMERIC,
-	weight_kg				  		NUMERIC,
-	died_date				    	DATE,
-	lat						      	DOUBLE PRECISION,
-	long					      	DOUBLE PRECISION,
-	dwh_create_date				TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	athlete_id				INT,
+	name					VARCHAR(55),
+	born_date				DATE,
+	born_city				VARCHAR(55),
+	born_region				VARCHAR(40),
+	noc						VARCHAR(80),
+	height_cm				NUMERIC,
+	weight_kg				NUMERIC,
+	died_date				DATE,
+	lat						DOUBLE PRECISION,
+	long					DOUBLE PRECISION,
+	dwh_create_date			TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -93,10 +93,10 @@ CREATE TABLE silver.olympics_bios_locs (
 DROP TABLE IF EXISTS silver.olympics_noc_regions;
 
 CREATE TABLE silver.olympics_noc_regions (
-	noc						      	VARCHAR(5),
-	region					    	VARCHAR(35),
-	notes					      	VARCHAR(30),
-	dwh_create_date				TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	noc						VARCHAR(5),
+	region					VARCHAR(35),
+	notes					VARCHAR(30),
+	dwh_create_date			TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -111,11 +111,11 @@ CREATE TABLE silver.olympics_noc_regions (
 DROP TABLE IF EXISTS silver.olympics_populations;
 
 CREATE TABLE silver.olympics_populations (
-	country_name			  	TEXT,
-	country_code			  	TEXT,
-	year					      	INT,
-	population				  	NUMERIC,
-	dwh_create_date				TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	country_name			TEXT,
+	country_code			TEXT,
+	year					INT,
+	population				NUMERIC,
+	dwh_create_date			TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -130,16 +130,16 @@ CREATE TABLE silver.olympics_populations (
 DROP TABLE IF EXISTS silver.olympics_results;
 
 CREATE TABLE silver.olympics_results (
-	olympic_year			  	INT,
-	game_type				    	TEXT,
-	sport_event				  	VARCHAR(160),
-	team 					      	VARCHAR(60),
-	pos 					      	INT,
-	is_tied					    	BOOLEAN,
-	medal					      	VARCHAR(10),
-	as_name					    	VARCHAR(50),
-	athlete_id				  	INT,
-	noc						      	TEXT,
-	discipline				  	VARCHAR(35),
-	dwh_create_date				TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	olympic_year			INT,
+	game_type				TEXT,
+	sport_event				VARCHAR(160),
+	team					VARCHAR(60),
+	pos						INT,
+	is_tied					BOOLEAN,
+	medal					VARCHAR(10),
+	as_name					VARCHAR(50),
+	athlete_id				INT,
+	noc						TEXT,
+	discipline				VARCHAR(35),
+	dwh_create_date			TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
