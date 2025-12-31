@@ -268,14 +268,14 @@ BEGIN
 
 	SELECT 
 		CASE
-			WHEN	games~*		'^\d{4}'
-			THEN	SUBSTRING(games FROM '^\d{4}')::INT
+			WHEN	games~*			'^\d{4}'
+			THEN	SUBSTRING		(games FROM '^\d{4}')::INT
 			ELSE	NULL
 		END 															AS olympic_year,
 	
 		CASE
-			WHEN	games~*		'^\d{4}(?:-\d{2})?\s+(.*?)\s+(Olympic Games|Olympics|Olympic|Games)$'
-			THEN	SUBSTRING(games FROM '^\d{4}(?:-\d{2})?\s+(.*?)\s+(Olympic Games|Olympics|Olympic|Games)$')
+			WHEN	games~*			'^\d{4}(?:-\d{2})?\s+(.*?)\s+(Olympic Games|Olympics|Olympic|Games)$'
+			THEN	SUBSTRING		(games FROM '^\d{4}(?:-\d{2})?\s+(.*?)\s+(Olympic Games|Olympics|Olympic|Games)$')
 			ELSE	NULL
 		END 															AS game_type,
 		sport_event,
