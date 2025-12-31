@@ -40,21 +40,21 @@ Notes:
 DROP TABLE IF EXISTS silver.olympics_bios;
 
 CREATE TABLE silver.olympics_bios (
-	sex											VARCHAR(10),
-	used_name								VARCHAR(55),
-	born_date				    		DATE,
-	born_city				   			VARCHAR(55),
-	born_region				    	VARCHAR(40),
-	born_country_code		  	VARCHAR(10),
-	died_date				      	DATE,
-	died_city				      	VARCHAR(55),
-	died_region				    	VARCHAR(40),
-	died_country_code		  	VARCHAR(10),
-	noc						        	VARCHAR(80),
-	athlete_id				    	INT,
-	height_cm				      	NUMERIC,
-	weight_kg				      	NUMERIC,
-	dwh_create_date			  	TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	sex						VARCHAR(10),
+	used_name				VARCHAR(55),
+	born_date				DATE,
+	born_city				VARCHAR(55),
+	born_region				VARCHAR(40),
+	born_country_code		VARCHAR(10),
+	died_date				DATE,
+	died_city				VARCHAR(55),
+	died_region				VARCHAR(40),
+	died_country_code		VARCHAR(10),
+	noc						VARCHAR(80),
+	athlete_id				INT,
+	height_cm				NUMERIC,
+	weight_kg				NUMERIC,
+	dwh_create_date			TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
