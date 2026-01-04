@@ -79,7 +79,7 @@ BEGIN
 	
 	SELECT
 		sex,
-		INITCAP(TRIM(REPLACE(used_name, '•', ' ')))							AS used_name,
+		TRIM(REPLACE(used_name, '•', ' '))									AS used_name,
 		silver.parse_date(born)												AS born_date,
 		(silver.parse_location(born)).city									AS born_city,
 		(silver.parse_location(born)).region								AS born_region,
