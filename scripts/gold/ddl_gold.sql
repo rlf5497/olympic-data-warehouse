@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS gold.dim_sport_events (
 /* =====================================================================
 	Dimension: fact_results
 	Grain:
-		- One row per athlete per event per Olympic Games
+		- One row per athlete per Olympic Games per participation record
 
 	Source:
 		- silver.olympics_results
