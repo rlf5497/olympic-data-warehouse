@@ -68,26 +68,30 @@ ORDER BY
 
 
 -- =====================================================================
--- TOP ATHLETES BY PARTICIPATION RECORDS
+-- MOST DECORATED ATHLETES
 -- Business Question:
--- "Which athletes have the most event participation records?"
+-- "Who are the most decorated Olympic athletes of all time?"
 -- Note:
--- 	Counts total appearances, not distinct games.
+-- 	Includes all medal types.
+-- 	Does NOT count participation without medals
 -- Grain:
 --	One row per athlete
 -- =====================================================================
-CREATE OR REPLACE VIEW gold_bi.vw_top_athletes_by_participation AS
+CREATE OR REPLACE VIEW gold_bi.vw_most_decorated_athletes AS
 SELECT
 	da.name,
-	COUNT(f.athlete_key) AS participation_records
+	COUNT(*) FILTER (WHERE f.medal IS NOT NULL)				AS total_medals,
+	COUNT(*) FILTER (WHERE f.medal = 'Gold')				AS gold_medals,
+	COUNT(*) FILTER (WHERE f.medal = 'Silver')				AS silver_medals,
+	COUNT(*) FILTER (WHERE f.medal = 'Bronze')				AS bronze_medals
 FROM gold.fact_olympic_results AS f
 INNER JOIN gold.dim_athletes AS da
-	    ON f.athlete_key = da.athlete_key
+		ON f.athlete_key = da.athlete_key
 GROUP BY
 	f.athlete_key,
 	da.name
 ORDER BY
-	participation_records DESC;
+	total_medals DESC;
 
 
 
