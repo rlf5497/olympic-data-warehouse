@@ -1,6 +1,6 @@
 /*
 ==========================================================================================
-Script: proc_load_silver.sql
+Procedure: silver.load_silver
 Layer: Silver (Curated & Standardized Layer)
 
 Purpose:
