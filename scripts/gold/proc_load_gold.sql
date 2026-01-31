@@ -1,10 +1,11 @@
-/* =====================================================================
-	Procedure: gold.proc_load_gold
+/* =============================================================================
+	Procedure: gold.load_gold
 	Layer: Gold
+	
 	Purpose:
-		- Load business-ready dimension and fact tables
-		- Applies Star Schema loading order (Dimensions -> Facts)
-		- Transform and conform data sourced from the Silver Layer
+		- Populate Gold-layer dimension and fact tables
+		- Applies Star Schema load order (Dimensions -> Fact)
+		- Transforms and conforms curated data from the Silver layer
 
 	Sources:
 		- silver.olympics_bios
@@ -16,10 +17,11 @@
 		CALL gold.load_gold();
 
 	Notes:
-		- Surrogate keys are regenerated on each run
-		- Fact table defines the analytical scope (Olympic participation)
-		- Dimensions may contain records that do not appear in the fact table
-===================================================================== */
+		- Surrogate keys are regenerated on each execution
+		- Dimension tables may contain records not referenced by the fact table
+		- The fact table defines the analytical scope (Olympic participation)
+		- LEFT JOINs are intentionally used to prevent loss of participation records
+============================================================================= */
 
 
 CALL gold.load_gold();
@@ -45,16 +47,20 @@ BEGIN
 	RAISE NOTICE '====================================================';
 
 
-	-------------------------------------
-	-- DIMENSION: gold.dim_athletes
-	--
-	-- Grain:
-	--   One row per athlete
-	--
-	-- Coverage Note:
-	--   This dimension includes all athletes present in the bios source,
-	--   regardless of Olympic participation.
-	-------------------------------------
+    /* ------------------------------------------------------------
+       DIMENSION: gold.dim_athletes
+
+       Grain:
+           - One row per athlete
+
+       Coverage:
+           - Includes all athletes present in biographical sources
+           - Olympic participation is not required for inclusion
+
+       Source:
+           - silver.olympics_bios
+           - silver.olympics_bios_locs
+    ------------------------------------------------------------ */
 	RAISE NOTICE 'Loading dimension: gold.dim_athletes';
 
 	start_time := clock_timestamp();
@@ -108,13 +114,16 @@ BEGIN
 
 
 
-	-------------------------------------
-	-- DIMENSION: gold.dim_nocs
-	--
-	-- Integration Logic:
-	--   - Combines NOCs from reference data and results
-	--   - Ensures coverage for all NOCs appearing in facts
-	-------------------------------------
+    /* ------------------------------------------------------------
+       DIMENSION: gold.dim_nocs
+
+       Integration Logic:
+           - Combines reference NOCs with NOCs appearing in results
+
+       Source:
+           - silver.olympics_nocs_regions
+           - silver.olympics_results
+    ------------------------------------------------------------ */
 	RAISE NOTICE 'Loading dimension: gold.dim_nocs';
 
 	start_time := clock_timestamp();
@@ -152,12 +161,15 @@ BEGIN
 
 		
 
-	-------------------------------------
-	-- DIMENSION: gold.dim_games
-	--
-	-- Grain:
-	--   One row per Olympic Games (year + season)
-	-------------------------------------
+    /* ------------------------------------------------------------
+       DIMENSION: gold.dim_games
+
+       Grain:
+           - One row per Olympic Games (year + season)
+
+       Source:
+           - silver.olympics_results
+    ------------------------------------------------------------ */
 	RAISE NOTICE 'Loading dimension: gold.dim_games';
 
 	start_time := clock_timestamp();
@@ -182,12 +194,15 @@ BEGIN
 
 		
 
-	-------------------------------------
-	-- DIMENSION: gold.dim_sport_events
-	--
-	-- Grain:
-	--   One row per unique sport event
-	-------------------------------------	
+    /* ------------------------------------------------------------
+       DIMENSION: gold.dim_sport_events
+
+       Grain:
+           - One row per unique sport event
+
+       Source:
+           - silver.olympics_results
+    ------------------------------------------------------------ */	
 	RAISE NOTICE 'Loading dimension: gold.dim_sport_events';
 
 	start_time := clock_timestamp();
@@ -216,17 +231,17 @@ BEGIN
 
 		
 	
-	-------------------------------------
-	-- FACT: gold.fact_olympic_results
-	--
-	-- Grain:
-	--   One row per athlete per Olympic Games per participation record
-	--
-	-- Notes:
-	--   - LEFT JOINs are used to prevent loss of participation records
-	--   - Fact rows may reference NULL dimension keys if lookup data is missing
-	--   - Analytics based on this table reflect participation-driven scope
-	-------------------------------------
+    /* ------------------------------------------------------------
+       FACT TABLE: gold.fact_olympic_results
+
+       Grain:
+           - One row per athlete per Olympic Games per participation
+
+       Notes:
+           - LEFT JOINs preserve all participation records
+		   - Dimension keys may be NULL if reference data is missing
+		   - Fact table defines the analytical scope for BI querie
+    ------------------------------------------------------------ */
 	RAISE NOTICE 'Loading fact table: gold.fact_olympic_results';
 
 	start_time := clock_timestamp();
