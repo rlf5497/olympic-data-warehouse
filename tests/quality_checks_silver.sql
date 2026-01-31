@@ -1,7 +1,8 @@
 /*
 ====================================================================================================
-File	: quality_checks_silver.sql
-Purpose	:
+File: quality_checks_silver.sql
+
+Purpose:
     Validate data quality, standardization, and transformation rules
     applied during the Bronze → Silver load of the Olympic Data Warehouse.
 
@@ -29,7 +30,9 @@ Notes:
 
 /*
 ====================================================================================================
-QUALITY CHECKS: bronze.olympics_bios
+QUALITY CHECKS
+Source		: bronze.olympics_bios
+Target		: silver.olympics_bios
 ====================================================================================================
 */
 
@@ -39,6 +42,7 @@ QUALITY CHECKS: bronze.olympics_bios
 --------------------
 
 -- Unwanted leading/trailing spaces
+-- Expected Results: 0 rows
 SELECT
 	sex
 FROM silver.olympics_bios
@@ -56,15 +60,18 @@ FROM silver.olympics_bios;
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	used_name
 FROM silver.olympics_bios
 WHERE
 	used_name <> TRIM(used_name);
 
+
 -- Special character check (• should be replaced with space)
+-- Expected Results: 0 rows
 SELECT
-	COUNT(*) AS names_without_bulltet
+	COUNT(*) AS names_with_bulltet
 FROM silver.olympics_bios
 WHERE
 	used_name ILIKE '%•%';
@@ -75,6 +82,7 @@ WHERE
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	born_country_code
 FROM silver.olympics_bios
@@ -93,8 +101,11 @@ WHERE
 -- born date parsing (Silver logic validation)
 --------------------
 
--- Valid date extraction patterns
-SELECT DISTINCT
+-- Valid date extraction patterns (expected coverage)
+SELECT
+	*
+FROM
+(SELECT DISTINCT
 	born,
 	CASE
 		WHEN	born~*		'^\d{1,2}\s+[A-Za-z]+\s+\d{4}'
@@ -107,8 +118,13 @@ SELECT DISTINCT
 		THEN	SUBSTRING	(born FROM '^\d{4}')
 		ELSE 	NULL
 	END AS extracted_date
-FROM bronze.olympics_bios;
+FROM bronze.olympics_bios)
+WHERE
+	extracted_date IS NULL
+AND	born IS NOT NULL;
 
+
+-- Expected Results: 0 rows
 SELECT DISTINCT
 	born_date,
 	born_city,
@@ -136,8 +152,8 @@ FROM(
 	SELECT 
 		born,
 		NULLIF(TRIM(SUBSTRING(born FROM 'in\s+([^,]+),')), '?')					AS born_city,
-		NULLIF(TRIM(SUBSTRING(born FROM ',\s+([^,]+)\s+\(\w{3}\)')), '?')		AS born_region,
-		TRIM(SUBSTRING(born FROM '\((\w{3})\)'))								AS born_country_code
+		NULLIF(TRIM(SUBSTRING(born FROM ',\s+([^,]+)\s+\(\w{3}\)')), '?')			AS born_region,
+		TRIM(SUBSTRING(born FROM '\((\w{3})\)'))									AS born_country_code
 	FROM bronze.olympics_bios
 ) AS sq
 WHERE
@@ -149,6 +165,7 @@ WHERE
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	died
 FROM bronze.olympics_bios
@@ -175,6 +192,7 @@ FROM silver.olympics_bios;
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	noc
 FROM silver.olympics_bios
@@ -191,6 +209,7 @@ FROM silver.olympics_bios;
 -- athlete_id (primary key integrity)
 --------------------
 
+-- Expected Results: 0 rows
 SELECT
 	athlete_id,
 	COUNT(*) AS duplicates
@@ -207,6 +226,7 @@ OR 	athlete_id IS NULL;
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	measurements
 FROM bronze.olympics_bios
@@ -234,7 +254,9 @@ WHERE
 
 /*
 ====================================================================================================
-QUALITY CHECKS: bronze.olympics_bios_locs
+QUALITY CHECKS
+Source		: bronze.olympics_bios_locs
+Target		: silver.olympics_bios_locs
 ====================================================================================================
 */
 
@@ -243,6 +265,7 @@ QUALITY CHECKS: bronze.olympics_bios_locs
 -- athlete_id
 --------------------
 
+-- Expected Results: 0 rows
 SELECT
 	athlete_id,
 	COUNT(*) AS duplicates
@@ -258,6 +281,7 @@ HAVING
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	name
 FROM silver.olympics_bios_locs
@@ -270,18 +294,21 @@ WHERE
 --------------------
 
 -- Unwated spaces
+-- Expected Results: 0 rows
 SELECT
 	born_date
 FROM bronze.olympics_bios_locs
 WHERE
 	born_date <> TRIM(born_date);
 
+-- Expected Results: 0 rows
 SELECT
 	born_city
 FROM silver.olympics_bios_locs
 WHERE
 	born_city <> TRIM(born_city);
 
+-- Expected Results: 0 rows
 SELECT
 	died_date
 FROM bronze.olympics_bios_locs
@@ -293,6 +320,7 @@ WHERE
 -- noc
 --------------------
 
+-- Expected Results: 0 rows
 SELECT
 	noc
 FROM bronze.olympics_bios_locs
@@ -303,7 +331,9 @@ WHERE
 
 /*
 ====================================================================================================
-QUALITY CHECKS: bronze.olympics_noc_regions
+QUALITY CHECKS
+Source		: bronze.olympics_noc_regions
+Target		: silver.olympics_noc_regions
 ====================================================================================================
 */
 
@@ -312,18 +342,21 @@ QUALITY CHECKS: bronze.olympics_noc_regions
 -- noc
 --------------------
 
+-- Expected Results: 0 rows
 SELECT
 	noc
 FROM silver.olympics_noc_regions
 WHERE
 	noc <> TRIM(noc)
-OR	noc <> UPPER(noc);
+OR	noc <> UPPER(noc)
+OR	LENGTH(noc) <> 3;
 
 
 --------------------
 -- region
 --------------------
 
+-- Expected Results: 0 rows
 SELECT
 	region
 FROM silver.olympics_noc_regions
@@ -334,7 +367,9 @@ WHERE
 
 /*
 ====================================================================================================
-QUALITY CHECKS: bronze.olympics_results
+QUALITY CHECKS
+Source		: bronze.olympics_results
+Target		: silver.olympics_results
 ====================================================================================================
 */
 
@@ -344,12 +379,14 @@ QUALITY CHECKS: bronze.olympics_results
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	games
 FROM bronze.olympics_results
 WHERE
 	games <> TRIM(games);
 
+-- Expected Results: 0 rows
 SELECT
 	game_type
 FROM silver.olympics_results
@@ -371,6 +408,7 @@ SELECT DISTINCT
 	END AS game_type
 FROM bronze.olympics_results;
 
+-- Expected Results: 0 rows
 SELECT DISTINCT
 	olympic_year,
 	game_type
@@ -384,12 +422,14 @@ WHERE
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	sport_event
 FROM silver.olympics_results
 WHERE
 	sport_event <> TRIM(sport_event);
 
+-- Expected Results: 0 rows
 SELECT
 	team
 FROM silver.olympics_results
@@ -411,6 +451,16 @@ FROM bronze.olympics_results;
 -- 98.0			-> pos = 98, is_tied = FALSE
 -- =10			-> pos = 10, is_tied = TRUE
 -- 8 h9 r1/4	-> pos = NULL, is_tied = NULL
+
+-- Failure detection
+SELECT DISTINCT
+	pos
+FROM bronze.olympics_results
+WHERE
+	pos IS NOT NULL
+AND	pos !~ '^\s*=?\d+(\.0)?\s*$';
+
+-- Extraction logic
 SELECT
 	pos,
 	SUBSTRING(pos FROM '^\s*=?(\d+)(?:\.0)?\s*$')::INT AS pos_num,
@@ -429,6 +479,7 @@ FROM bronze.olympics_results;
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	medal
 FROM silver.olympics_results
@@ -445,6 +496,7 @@ FROM bronze.olympics_results;
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	noc
 FROM silver.olympics_results
@@ -458,6 +510,7 @@ OR	LENGTH(noc) <> 3;
 --------------------
 
 -- Unwanted spaces
+-- Expected Results: 0 rows
 SELECT
 	discipline
 FROM silver.olympics_results
