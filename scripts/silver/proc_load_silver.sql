@@ -5,22 +5,25 @@ Layer: Silver (Curated & Standardized Layer)
 ==========================================================================================
 Purpose:
 	Loads cleaned, standardized, and enriched data into the Silver Layer of the
-	Olympics Data Warehouse. This procedure truncates and reloads all Silver tables
-	using transformed data from the Bronze layer.
+	Olympics Data Warehouse. 
 	
-	This procedure applies:
-		- Data cleansing (trimming, null handling)
-		- Data standardization (case normalization, type casting)
-		- Data enrichment (parsed dates, locations, derived attributes)
-		- Structural transformations (wide-to-long reshaping)
+	This procedure performs a full refresh of all Silver tables by truncating
+	existing data and reloading transformed records sourced from the Bronze layer.
+	
+Transformations Applied:
+	- Data cleansing (trimming, null handling)
+	- Data standardization (case normalization, type casting)
+	- Data enrichment (parsed dates, locations, derived attributes)
+	- Structural transformations (wide-to-long reshaping)
 
 Usage:
 	CALL silver.load_silver();
 
 Notes:
-	- Silver layer applies data quality rules and standardization.
+	- The Silver layer enforces data quality and schema consistency.
 	- Invalid or non-conforming values are converted to NULL.
-	- No aggregations are performed in Silver; these are handled in the Gold layer.
+	- No aggregations or business logic are applied in Silver;
+	  these are handled exclusively in the Gold layer.
 	- Custom parsing functions used:
 		* silver.parse_date(text)
 		* silver.parse_location(text)
@@ -52,9 +55,12 @@ BEGIN
 	
 
 
-    -------------------------------------
-    -- Load silver.olympics_bios
-    -------------------------------------
+	/*-----------------------------------------------------------------------------
+		Load: silver.olympics_bios
+		Purpose:
+			Curated athlete biographical data with standardized dates,
+			normalized locations, and cleaned physical measurements.
+	-----------------------------------------------------------------------------*/
 	RAISE NOTICE 'Loading silver.olympics_bios...';
 
 	start_time := clock_timestamp();
@@ -79,15 +85,23 @@ BEGIN
 	
 	SELECT
 		sex,
+		
+		-- Remove special bullet character and trim whitespace
 		TRIM(REPLACE(used_name, '•', ' '))									AS used_name,
+
+		-- Parse and standardize birth information
 		silver.parse_date(born)												AS born_date,
 		(silver.parse_location(born)).city									AS born_city,
 		(silver.parse_location(born)).region								AS born_region,
 		(silver.parse_location(born)).country_code							AS born_country_code,
+
+		-- Parse and standardize death information
 		silver.parse_date(died)												AS died_date,
 		(silver.parse_location(died)).city									AS died_city,
 		(silver.parse_location(died)).region								AS died_region,
 		(silver.parse_location(died)).country_code							AS died_country_code,
+
+		-- Normalize NOC formatting
 		INITCAP(noc)														AS noc,
 		athlete_id,
 		
@@ -116,9 +130,11 @@ BEGIN
 
 
 
-    -------------------------------------
-    -- Load silver.olympics_bios_locs
-    -------------------------------------
+	/*-----------------------------------------------------------------------------
+		Load: silver.olympics_bios_locs
+		Purpose:
+			Athlete biographical data enriched with geographic coordinates.
+	-----------------------------------------------------------------------------*/
 	RAISE NOTICE 'Loading silver.olympics_bios_locs...';
 
 	start_time := clock_timestamp();
@@ -160,9 +176,11 @@ BEGIN
 
 
 
-    -------------------------------------
-    -- Load silver.olympics_noc_regions
-    -------------------------------------
+	/*-----------------------------------------------------------------------------
+		Load: silver.olympics_noc_regions
+		Purpose:
+			Standardized mapping of National Olympic Committees (NOC) to regions.
+	-----------------------------------------------------------------------------*/
 	RAISE NOTICE 'Loading silver.olympics_noc_regions...';
 
 	start_time := clock_timestamp();
@@ -188,9 +206,12 @@ BEGIN
 
 
 
-    -------------------------------------
-    -- Load silver.olympics_populations
-    -------------------------------------
+	/*-----------------------------------------------------------------------------
+		Load: silver.olympics_populations
+		Purpose:
+			Normalize population reference data from wide format
+			into a year-based long format for analytical use.
+	-----------------------------------------------------------------------------*/
 	RAISE NOTICE 'Loading silver.olympics_populations...';
 
 	start_time := clock_timestamp();
@@ -246,9 +267,12 @@ BEGIN
 
 
 
-    -------------------------------------
-    -- Load silver.olympics_results
-    -------------------------------------
+	/*-----------------------------------------------------------------------------
+		Load: silver.olympics_results
+		Purpose:
+			Cleaned and standardized Olympic competition results,
+			including parsed positions, tie indicators, and medal outcomes.
+	-----------------------------------------------------------------------------*/
 	RAISE NOTICE 'Loading silver.olympics_results...';
 
 	start_time := clock_timestamp();
@@ -269,12 +293,14 @@ BEGIN
 	)
 
 	SELECT 
+		-- Extract Olympic year from games string
 		CASE
 			WHEN	games~*			'^\d{4}'
 			THEN	SUBSTRING		(games FROM '^\d{4}')::INT
 			ELSE	NULL
 		END 															AS olympic_year,
-	
+
+		-- Extract game type (e.g., Summer, Winter)
 		CASE
 			WHEN	games~*			'^\d{4}(?:-\d{2})?\s+(.*?)\s+(Olympic Games|Olympics|Olympic|Games)$'
 			THEN	SUBSTRING		(games FROM '^\d{4}(?:-\d{2})?\s+(.*?)\s+(Olympic Games|Olympics|Olympic|Games)$')
@@ -282,7 +308,11 @@ BEGIN
 		END 															AS game_type,
 		sport_event,
 		team,
+
+		-- Parse finishing position
 		SUBSTRING(pos FROM '^\s*=?(\d+)(?:\.0)?\s*$')::INT				AS pos,
+
+		-- Identify tied positions
 		CASE
 			-- '=' prefix indicates a tied position
 			WHEN pos ~ '^\s*=\d+(\.0)?\s*$' THEN TRUE
@@ -296,6 +326,8 @@ BEGIN
 		medal,
 		as_name,
 		athlete_id,
+		
+		-- Normalize NOC to uppercase
 		UPPER(noc) 														AS noc,
 		discipline
 	FROM bronze.olympics_results;
