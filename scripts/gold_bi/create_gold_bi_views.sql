@@ -22,13 +22,48 @@
 
 
 
--- =====================================================================
--- ATHLETE PARTICIPATION TREND OVER TIME
--- Business Question:
--- "How has athlete participation changed across Olympic Games?"
--- Grain:
---	One row per Olympic year + season
--- =====================================================================
+/* =====================================================================
+   OLYMPICS ANALYSIS BASE
+   Purpose:
+       Canonical semantic view containing all commonly used fields for
+       Olympic performance analysis dashboards.
+
+   Notes:
+       - Serves as a reusable base for BI tools
+       - No aggregations applied (detail-level grain)
+
+   Grain:
+       One row per athlete participation per event per Olympic Games
+===================================================================== */
+CREATE OR REPLACE VIEW vw_olympics_analysis_base AS
+SELECT
+	da.name,
+	f.medal,
+	dse.discipline,
+	dg.olympic_year,
+    dg.season,
+    dn.noc,
+    dn.region
+FROM gold.fact_olympic_results AS f
+INNER JOIN gold.dim_athletes AS da
+		ON f.athlete_key = da.athlete_key
+INNER JOIN gold.dim_games AS dg
+		ON f.game_key = dg.game_key
+INNER JOIN gold.dim_nocs AS dn
+		ON f.noc_key = dn.noc_key
+INNER JOIN gold.dim_sport_events AS dse
+		ON f.sport_event_key = dse.sport_event_key;
+	
+
+
+/* =====================================================================
+   ATHLETE PARTICIPATION TREND OVER TIME
+   Business Question:
+       "How has the athlete participation changed across Olympic Games?"
+	   
+   Grain:
+       One row per Olympic year and season
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_athlete_trend_over_time AS
 SELECT
 	dg.olympic_year,
@@ -46,13 +81,14 @@ ORDER BY
 
 
 
--- =====================================================================
--- ATHLETE COUNT BY NOC
--- Business Question:
--- "How many unique athletes represented each NOC?"
--- Grain:
---	One row per NOC
--- =====================================================================
+/* =====================================================================
+   ATHLETE COUNT BY NOC
+   Business Question:
+       "How many unique athletes represented each NOC?"
+	   
+   Grain:
+       One row per NOC
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_athletes_by_noc AS
 SELECT
 	dn.noc,
@@ -69,13 +105,14 @@ ORDER BY
 
 
 
--- =====================================================================
--- KPI OVERVIEW
--- Business Question:
--- "What is the overall scale of the Olympic dataset?"
--- Grain:
--- 	Single row (global KPIs)
--- =====================================================================
+/* =====================================================================
+   KPI OVERVIEW
+   Business Question:
+       "What is the overall scale of the Olympic dataset?"
+	   
+   Grain:
+       Single row (global KPIs)
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_kpi_overview AS
 SELECT
 	(SELECT COUNT(*) FROM gold.dim_athletes)					AS total_athletes,
@@ -90,15 +127,17 @@ FROM gold.fact_olympic_results;
 
 
 
--- =====================================================================
--- MEDAL EFFICIENCY BY NOC
--- Business Question:
--- "Which countries are most efficient at converting athletes into medals?"
--- Notes:
---	- Filters out small samples to avoid statistical distortion
--- Grain:
---	One row per NOC
--- =====================================================================
+/* =====================================================================
+   MEDAL EFFICIENCY BY NOC
+   Business Question:
+       "Which countries are most efficient at converting athletes into medals?"
+	   
+   Notes:
+       - Filters out small samples to avoid statistical distortion
+
+	Grain:
+		One row per NOC
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_medal_efficiency_by_noc AS 
 WITH totals AS (
 	SELECT
@@ -129,13 +168,14 @@ ORDER BY
 
 
 
--- =====================================================================
--- MEDALS BY OLYMPIC GAMES
--- Business Question:
--- "How many medals were awarded per Olympic Games?"
--- Grain:
---	One row per Olympic year + season
--- =====================================================================
+/* =====================================================================
+   MEDALS BY OLYMPIC GAMES
+   Business Question:
+       "How many medals were awarded per Olympic Games?"
+	   
+	Grain:
+		One row per Olympic year and season
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_medals_by_games AS
 SELECT
 	dg.olympic_year,
@@ -155,13 +195,14 @@ ORDER BY
 
 
 
--- =====================================================================
--- MEDAL DISTRIBUTION BY NOC
--- Business Question:
--- "How are medals distributed across NOC?"
--- Grain:
---	One row per NOC
--- =====================================================================
+/* =====================================================================
+   MEDAL DISTRIBUTION BY NOC
+   Business Question:
+       "How are medals distributed across NOCs?"
+	  
+	Grain:
+		One row per NOC
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_medals_by_noc AS 
 SELECT
 	dn.noc,
@@ -181,16 +222,18 @@ ORDER BY
 
 
 
--- =====================================================================
--- MOST DECORATED ATHLETES
--- Business Question:
--- "Who are the most decorated Olympic athletes of all time?"
--- Note:
--- 	Includes all medal types.
--- 	Does NOT count participation without medals
--- Grain:
---	One row per athlete
--- =====================================================================
+/* =====================================================================
+   MOST DECORATED ATHLETES
+   Business Question:
+       "Who are the most decorated Olympic athletes of all time?"
+
+   Notes:
+   	- Includes all medal types
+	- Participation without medals is excluded
+	  
+   Grain:
+		One row per athlete
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_most_decorated_athletes AS
 SELECT
 	da.name,
@@ -209,13 +252,14 @@ ORDER BY
 
 
 
--- =====================================================================
--- SPORTS WITH HIGHEST ATHLETE PARTICIPATION
--- Business Question:
--- "Which sports attracted the most unique athletes?"
--- Grain:
---	One row per sport discipline
--- =====================================================================
+/* =====================================================================
+   SPORTS WITH HIGHEST ATHLETE PARTICIPATION
+   Business Question:
+       "Which sports attracted the most unique athletes?"
+	  
+	Grain:
+		One row per sport discipline
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_sport_participation AS
 SELECT
 	dse.discipline,
@@ -230,13 +274,14 @@ ORDER BY
 
 
 
--- =====================================================================
--- TOP ATHLETES BY OLYMPIC GAMES PARTICIPATED
--- Business Question:
--- "Which athletes participated in the most Olympic Games?"
--- Grain:
--- 	One row per athlete
--- =====================================================================
+/* =====================================================================
+   TOP ATHLETES BY OLYMPIC GAMES PARTICIPATED
+   Business Question:
+       "Which athletes participated in the most Olympic Games?"
+	  
+	Grain:
+		One row per athlete
+===================================================================== */
 CREATE OR REPLACE VIEW gold_bi.vw_top_athletes_by_games AS
 SELECT
 	da.name,
