@@ -2,7 +2,7 @@
 ==========================================================================================
 Script: ddl_silver.sql
 Layer: Silver (Curated & Standardized Layer)
-==========================================================================================
+
 Purpose:
 	Defines all Silver-layer tables for the Olympics Data Warehouse. The Silver layer
 	stores cleaned, standardized, and enriched data derived from the Bronze layer.
