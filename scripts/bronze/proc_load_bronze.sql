@@ -177,6 +177,7 @@ BEGIN
 
 EXCEPTION
 	WHEN OTHERS THEN
+	-- Any failure aborts the Bronze load to prevent partial ingestion.
     RAISE NOTICE '========================================';
 	RAISE NOTICE 'ERROR OCCURED: %', SQLERRM;
 	RAISE;
