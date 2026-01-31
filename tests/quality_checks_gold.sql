@@ -99,6 +99,10 @@ OR	game_key IS NULL;
 -- 5. Referential integrity check: FACT -> DIM_GAMES
 --	  game_key is mandatory in the fact table
 --	  Expected Results: 0
+--
+--	  Note:
+--		- Natural keys are enforced during load.
+--		- This check validates surrogate key integrity only
 SELECT 
 	COUNT(*) AS orphan_game_keys
 FROM gold.fact_olympic_results AS r
@@ -114,7 +118,8 @@ WHERE
 -- ============================================================================
 
 -- 6. Check for duplicate sport_event_keys
--- 	  sport_event_key is optional by design
+-- 	  sport_event_key must be unique and NOT NULL in the dimension
+--	  Optional relationship applies ONLY in the fact tale
 -- 	  Expected result: ZERO ROWS
 SELECT
 	sport_event_key,
@@ -128,9 +133,13 @@ OR	sport_event_key IS NULL;
 
 
 -- 7. Referential integrity check: FACT -> DIM_SPORT_EVENTS
---	  NULL sport_event_key values are VALID
+--	  NULL sport_event_key values are VALID (by design)
 --	  This confirms optional relationship behavior
 -- 	  Expected Results: NON-ZERO COUNT (NULLS EXPECTED)
+--
+--	  Note:
+--		- Natural keys are enforced during load.
+--		- This check validates surrogate key integrity only
 SELECT 
 	COUNT(*) AS missing_sport_event_keys
 FROM gold.fact_olympic_results AS r
@@ -157,6 +166,10 @@ WHERE
 -- 9. Referential integrity check: FACT -> DIM_NOCS
 --	  NULL noc_key is VALID by design
 --	  Expected Result: NON-ZERO COUNT
+--
+--	  Note:
+--		- Natural keys are enforced during load.
+--		- This check validates surrogate key integrity only
 SELECT
 	COUNT(*) AS missing_noc_key
 FROM gold.fact_olympic_results AS r
@@ -192,6 +205,9 @@ FROM gold.fact_olympic_results;
 -- 12. Placement Validation
 --	   Placement values must be positive integers
 -- 	   Expected Result: ZERO ROWS
+--
+--	   Note:
+--		- NULL placements are allowed for non-ranked participation
 SELECT *
 FROM gold.fact_olympic_results
 WHERE
