@@ -2,7 +2,7 @@
 
 
 ## Data Origin
-This dataset is sourced from the public Olympics data repository by Keith Galli.
+This dataset is sourced from the public Olympics data repository by **Keith Galli**.
 The original repository contains multiple folders with pre-labeled data, including
 folders named `athletes` and `clean-data`.
 
