@@ -187,7 +187,7 @@ You are free to use, modify, and distribute this project with proper attribution
 
 ## 👋 About Me
 Hi. I'm **Reymart Felisilda**
-A Mechanical Project Engineer upskilling into Data Engineering, with a strong focus on:
+a Mechanical Project Engineer upskilling into Data Engineering, with a strong focus on:
 - Data Warehousing
 - SQL & Analytics Engineering
 - Dimensional Modeling
