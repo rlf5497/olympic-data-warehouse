@@ -138,4 +138,38 @@ https://public.tableau.com/app/profile/reymart.felisilda/viz/olympic_games_perfo
 - **Olympic Dataset by Keith Galli**
   https://github.com/KeithGalli/Olympics-Dataset
   
-> Even datasets described as "clean" are treated as **raw inputs** and fully reprocessed to esnure consistency and transparency.
+> Even datasets described as "clean" are treated as **raw inputs** and fully reprocessed to ensure consistency and transparency.
+
+---
+
+## 📂 Repository Structure
+
+```text
+olympic-data-warehouse/
+│
+├── datasets/
+│   └── source_olympics/              # Raw Olympic CSV datasets (external source)
+│
+├── docs/                             # Architecture, diagrams, and documentation
+│   ├── data_architecture.drawio
+│   ├── data_models.drawio
+│   ├── data_flow.drawio
+│   ├── data_catalog.md
+│   └── naming_conventions.md
+│
+├── scripts/
+│   ├── init_database.sql             # Database & schema initialization
+│   ├── bronze/                       # Raw ingestion layer
+│   ├── silver/                       # Cleansing and transformation layer
+│   ├── gold/                         # Star schema (facts & dimensions)
+│   └── gold_bi/                      # BI semantic views and exports
+│
+├── exports/
+│   └── export_gold_bi_views.sql      # CSV export procedure for BI tools
+│
+├── tests/
+│   ├── quality_checks_silver.sql     # Silver layer data quality validation
+│   └── quality_checks_gold.sql       # Gold layer integrity & schema validation
+│
+├── README.md                         # Project overview
+└── LICENSE
