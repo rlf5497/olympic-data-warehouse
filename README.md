@@ -114,3 +114,11 @@ The insights produced by the Gold BI Semantic Layer are visualized using an inte
 🔗 **Tableau Public Dashboard**
 ![Olympic Games Performance Dashboard](docs/olympic_dashboard_preview.png)
 https://public.tableau.com/app/profile/reymart.felisilda/viz/olympic_games_performance_dashboard/OlympicGamesPerformanceDashboard#1
+
+### Dashboard Highlights
+- Athlete participation trends across Olympic Games
+- Medal distribution by National Olympic Committee (NOC)
+- Most decorated Olympic athletes
+
+> The dashboard consumes **Gold BI semantic views**, not raw tables, ensuring
+> consistent business logic, performance, and reusability across analyses.
