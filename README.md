@@ -174,3 +174,7 @@ olympic-data-warehouse/
 │
 ├── README.md                         # Project overview
 └── LICENSE
+
+---
+
+## 🛡️ License 
