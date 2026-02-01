@@ -50,6 +50,8 @@ This project demonstrates:
 
 The data warehouse follows the **Medallion Architecture**, a layered approach that improves data quality, scalability, and maintainability.
 
+![Data Architecture](docs/data_architecture.png)
+
 ### 🥉 Bronze Layer - Raw Ingestion
 - Stores data **exactly as received**
 - No transformations applied
