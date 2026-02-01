@@ -19,7 +19,7 @@
 
 	Output Structure:
 		<base_path>\
-			- vw_olympics_analysis_base.csv
+			- vw_olympic_analysis.csv
 			- vw_athletes_by_noc.csv
 			- vw_athlete_trend_over_time.csv
 			- vw_kpi_overview.csv
@@ -67,12 +67,12 @@ BEGIN
 
 
     /* =====================================================================
-       OLYMPICS ANALYSIS BASE
+       OLYMPIC ANALYSIS
        Grain:
            Detail-level (no aggregation)
     ===================================================================== */
-	view_name := 'vw_olympics_analysis_base';
-	file_path := base_path || '\vw_olympics_analysis_base.csv';
+	view_name := 'vw_olympic_analysis';
+	file_path := base_path || '\vw_olympic_analysis.csv';
 
 	EXECUTE format(
 		'COPY (SELECT * FROM gold_bi.%I)
