@@ -174,7 +174,21 @@ olympic-data-warehouse/
 │
 ├── README.md                         # Project overview
 └── LICENSE
+```
 
 ---
 
-## 🛡️ License 
+## 🛡️ License
+
+This project is licensed under the [MIT License](LICENSE).
+You are free to use, modify, and distribute this project with proper attribution.
+
+---
+
+## 👋 About Me
+Hi. I'm Reymart Felisilda
+A Mechanical Project Engineer upskilling into Data Engineering, with a strong focus on:
+- Data Warehousing
+- SQL & Analytics Engineering
+- Dimensional Modeling
+- BI Enablement
