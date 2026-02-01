@@ -124,3 +124,18 @@ https://public.tableau.com/app/profile/reymart.felisilda/viz/olympic_games_perfo
 
 > The dashboard consumes **Gold BI semantic views**, not raw tables, ensuring
 > consistent business logic, performance, and reusability across analyses.
+
+---
+
+## 🛠️ Tools & Technologies
+- **PostgreSQL** - Core data warehouse engine
+- **SQL / PLpgSQL** - ETL pipelines, testing, and exports
+- **Tableau** - BI Visualization (via semantic views)
+- **Draw.io** - Architecture, lineage, and modeling diagrams
+- **Git & GitHub** - Version control and documentation
+
+### Data Source
+- **Olympic Dataset by Keith Galli**
+  https://github.com/KeithGalli/Olympics-Dataset
+  
+> Even datasets described as "clean" are treated as **raw inputs** and fully reprocessed to esnure consistency and transparency.
