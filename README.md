@@ -152,7 +152,7 @@ olympic-data-warehouse/
 │
 ├── docs/                             # Architecture, diagrams, and documentation
 │   ├── data_architecture.png
-│   ├── data_models.png
+│   ├── data_model.png
 │   ├── data_flow.png
 │   ├── data_catalog.md
 │   ├── olympic_dashboard_preview.png
