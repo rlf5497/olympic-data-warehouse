@@ -72,3 +72,39 @@ The data warehouse follows the **Medallion Architecture**, a layered approach th
 - Explicit grain per view
 - Designed for BI interactivity
 - No row-level mutations; aggregations only.
+
+---
+
+## 🧱 Data Model
+
+The Gold layer is modeled using a **Star Schema**.
+
+### Fact Table
+- **`fact_olympic_results`**
+- Grain: *One row per athlete per Olympic Games participation*
+
+### Dimension Tables
+- `dim_athletes`
+- `dim_games`
+- `dim_sport_events`
+- `dim_nocs`
+
+All relationship follow **1-to-many** cardinality from dimensions to fact, ensuring predictable joins and performant analytics.
+
+---
+
+## 📊 Analytics & Business Questions
+
+The BI semantic layer supports analysis such as:
+
+- Athlete participation trends over time
+- Medal distribution by country (NOC)
+- Most decorated Olympic athletes
+- Sports with the highest athlete participation
+- Medal efficiency by country
+
+Aggregations are intentionally handled at the **semantic layer**, allowing BI tools to provide filtering, drill-downs, and interactive dashboards.
+
+---
+
+## 
