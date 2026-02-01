@@ -151,10 +151,11 @@ olympic-data-warehouse/
 │   └── source_olympics/              # Raw Olympic CSV datasets (external source)
 │
 ├── docs/                             # Architecture, diagrams, and documentation
-│   ├── data_architecture.drawio
-│   ├── data_models.drawio
-│   ├── data_flow.drawio
+│   ├── data_architecture.png
+│   ├── data_models.png
+│   ├── data_flow.png
 │   ├── data_catalog.md
+│   ├── olympic_dashboard_preview.png
 │   └── naming_conventions.md
 │
 ├── scripts/
