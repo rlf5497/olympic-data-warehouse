@@ -107,4 +107,10 @@ Aggregations are intentionally handled at the **semantic layer**, allowing BI to
 
 ---
 
-## 
+## 📈 Visualization & Dashboard
+
+The insights produced by the Gold BI Semantic Layer are visualized using an interactive Tableau dashboard built on top of the exported BI views.
+
+🔗 **Tableau Public Dashboard**
+![Olympic Games Performance Dashboard](docs/olympic_dashboard_preview.png)
+https://public.tableau.com/app/profile/reymart.felisilda/viz/olympic_games_performance_dashboard/OlympicGamesPerformanceDashboard#1
