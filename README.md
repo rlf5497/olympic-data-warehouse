@@ -1,15 +1,45 @@
-# olympic-data-warehouse
-This project is inspired by Keith Lee’s Olympic data, which was scraped from the Olympics website. While the original project uses Python (Pandas) for data cleaning, this implementation focuses on building a PostgreSQL-based Data Warehouse using the Medallion Architecture.
+# 🏅 Olympic Data Warehouse & Analytics Project
 
-# Work in Progress
+Welcome to the **Olympic Data Warehouse & Analytics Project**
+This repository demonstrates an end-to-end **modern data warehousing solution**, from raw data ingestion to analytics-ready datasets designed for Business Intelligence (BI) tools.
 
-* Gold Layer
-* Documentation & diagrams (Draw.io):
-    * Data Architecture
-    * Data Catalog
-    * Data Flow
-    * Data Integration
-    * Data Layers
-    * Data Model
-    * Naming Conventions
-    * Final README
+The project focuses on **data engineering best practices**, including medallion architecture, star schema modeling, data quality validation, and a semantic BI layer built for interactive analytics.
+
+While inspired by modern data warehouse design patterns shared by industry practitioners, this project is a **fully original implementation**, tailored specifically to Olympic Games analytics.
+
+---
+
+## 📌 Project Contributors & Credits
+
+This project builds upon publicly available resources and community knowledge:
+
+- **Reymart Felisilda** - Data Warehouse Design, ETL Development, Data Modeling, BI Semantic Layer
+- **Keith Galli** - Original Olympic datasets (scraped from official Olympic sources)
+- **Baraa Khatib Salkini** - Architectural inspiration and modern data warehouse concepts
+- **Andy Kriebel** - BI and Tableau dashboard design inspiration
+
+> ⚠️ ALL SQL scripts, transformations, modeling decisions, tests, and BI views in this repository are original implementations created for this project.
+
+---
+
+## Project Overview
+
+This project demonstrates:
+
+1. **Modern Data Architecture**
+   - Medallion Architecture (Bronze, Silver, Gold)
+   - Clear separation of ingestion, transformation, and analytics layers
+
+2. **ETL & Data Engineering**
+   - SQL-based pipelines using PostgreSQL
+   - Idempotent DDL and load procedures
+   - Explicit data quality and integrity checks
+
+3. **Dimensional Data Modeling**
+   - Star schema desing
+   - Fact and dimension tables optimized for analytics
+  
+4. **BI & Analytics Enablement**
+   - Business-facing semantic views
+   - Interactive, filterable analytics
+   - Reproducible exports for BI tools (e.g., Tableau)
