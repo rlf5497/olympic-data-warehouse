@@ -23,7 +23,7 @@
 
 
 /* =====================================================================
-   OLYMPICS ANALYSIS BASE
+   OLYMPIC ANALYSIS
    Purpose:
        Canonical semantic view containing all commonly used fields for
        Olympic performance analysis dashboards.
@@ -35,7 +35,7 @@
    Grain:
        One row per athlete participation per event per Olympic Games
 ===================================================================== */
-CREATE OR REPLACE VIEW vw_olympics_analysis_base AS
+CREATE OR REPLACE VIEW gold_bi.vw_olympic_analysis AS
 SELECT
 	da.name,
 	f.medal,
