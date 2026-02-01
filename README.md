@@ -43,3 +43,32 @@ This project demonstrates:
    - Business-facing semantic views
    - Interactive, filterable analytics
    - Reproducible exports for BI tools (e.g., Tableau)
+
+---
+
+## 🏗️ Data Architecture
+
+The data warehouse follows the **Medallion Architecture**, a layered approach that improves data quality, scalability, and maintainability.
+
+### 🥉 Bronze Layer - Raw Ingestion
+- Stores data **exactly as received**
+- No transformations applied
+- Acts as the immutable source of truth
+- Data ingested from CSV files into PostgreSQL
+
+### 🥈 Silver Layer - Cleansed & Standardized
+- Data cleansing (null handling, trimming, deduplication)
+- Standardization (case normalization, type casting)
+- Data enrichment (derived attributes, parsed dates, locations)
+- Structural transformations (e.g., reshaping)
+
+### 🥇 Gold Layer - Analytics - Ready
+- Business-ready datasets
+- Star schema design (fact and dimensions)
+- Optimized for analytical workloads
+
+### 📊 Gold BI Layer - Semantic Layer
+- Business-facing views
+- Explicit grain per view
+- Designed for BI interactivity
+- No row-level mutations; aggregations only.
