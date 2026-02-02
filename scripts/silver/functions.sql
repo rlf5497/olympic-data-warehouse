@@ -1,5 +1,5 @@
 /*============================================================================
-Function	: silver.parse_location
+Function	: silver.fn_parse_location
 Layer		: Silver (Curated & Standardized Layer)
 Purpose		: Parse and normalize location components from raw text fields.
 
@@ -29,7 +29,7 @@ Returns	:
 	country_code 	TEXT
 ============================================================================*/
 
-CREATE OR REPLACE FUNCTION silver.parse_location(text)
+CREATE OR REPLACE FUNCTION silver.fn_parse_location(text)
 RETURNS TABLE (
 	city			TEXT,
 	region			TEXT,
@@ -67,7 +67,7 @@ AS $$
 		SUBSTRING($1 FROM '\((\w{3})\)') AS country_code;
 $$;
 
-ALTER FUNCTION silver.parse_location(text)
+ALTER FUNCTION silver.fn_parse_location(text)
 OWNER TO postgres;
 
 
@@ -75,7 +75,7 @@ OWNER TO postgres;
 
 
 /* ============================================================================
-   Function : silver.parse_date
+   Function : silver.fn_parse_date
    Layer    : Silver (Curated & Standardized Layer)
    Purpose  : Extract and normalize partial and semi-structured date strings
               into a PostgreSQL DATE value.
@@ -99,7 +99,7 @@ OWNER TO postgres;
 	 - Designed for deterministic use in Silver-layer transformations
    ============================================================================ */
 
-CREATE OR REPLACE FUNCTION silver.parse_date(text)
+CREATE OR REPLACE FUNCTION silver.fn_parse_date(text)
 RETURNS DATE
 LANGUAGE sql
 IMMUTABLE
@@ -170,6 +170,6 @@ AS $$
         END;
 $$;
 
-ALTER FUNCTION silver.parse_date(text)
+ALTER FUNCTION silver.fn_parse_date(text)
 OWNER TO postgres;
 
