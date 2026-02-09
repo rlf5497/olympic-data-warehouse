@@ -182,8 +182,8 @@ Provides analytics-ready dimensional and fact tables optimized for BI and report
 
 ### 🔧 Technical Columns (`<dwh>`)
 
-**Purpose**
-- Technical metadata columns used for lineage, auditing, and data quality.
+**Purpose:**
+Technical metadata columns used for lineage, auditing, and data quality.
 
 **Rules**
 - Prefixed with `dwh_`
@@ -197,7 +197,7 @@ Provides analytics-ready dimensional and fact tables optimized for BI and report
 
 ## Function Naming Conventions (Silver Layer)
 
-**Purpose**
+**Purpose:**
 Encapsulate deterministic parsing and standardization logic.
 
 **Rules**
@@ -216,7 +216,7 @@ Encapsulate deterministic parsing and standardization logic.
 
 ## View Naming Conventions (Gold BI Layer)
 
-**Purpose**
+**Purpose:**
 Business-facing semantic views for analytics and BI tools.
 
 **Rules**
@@ -237,7 +237,7 @@ Business-facing semantic views for analytics and BI tools.
 
 ## Procedure Naming Conventions
 
-**Purpose**
+**Purpose:**
 Operational logic such as exports and orchestration
 
 **Rules**
@@ -254,7 +254,7 @@ Operational logic such as exports and orchestration
 
 ## Test & Quality Check Naming
 
-**Purpose**
+**Purpose:**
 Validate assumptions and data quality across layers.
 
 **Rules**
@@ -287,4 +287,5 @@ These conventions are designed to:
 - Communicate intent clearly to reviewers and recruiters
 
 Consistency is enforced by **design**, not tooling alone.
+
 
