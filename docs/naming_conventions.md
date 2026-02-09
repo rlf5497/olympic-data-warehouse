@@ -233,7 +233,7 @@ Business-facing semantic views for analytics and BI tools.
 - `gold_bi.vw_medals_by_games`
 - `gold_bi.vw_vw_kpi_overview`
 
---
+---
 
 ## Procedure Naming Conventions
 
@@ -287,5 +287,6 @@ These conventions are designed to:
 - Communicate intent clearly to reviewers and recruiters
 
 Consistency is enforced by **design**, not tooling alone.
+
 
 
