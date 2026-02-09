@@ -183,7 +183,7 @@ Provides analytics-ready dimensional and fact tables optimized for BI and report
 ### 🔧 Technical Columns (`<dwh>`)
 
 **Purpose**
-Technical metadata columns used for lineage, auditing, and data quality.
+- Technical metadata columns used for lineage, auditing, and data quality.
 
 **Rules**
 - Prefixed with `dwh_`
@@ -287,3 +287,4 @@ These conventions are designed to:
 - Communicate intent clearly to reviewers and recruiters
 
 Consistency is enforced by **design**, not tooling alone.
+
