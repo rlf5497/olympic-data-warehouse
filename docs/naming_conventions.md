@@ -148,5 +148,142 @@ Provides analytics-ready dimensional and fact tables optimized for BI and report
 - `game_key`
 - `sport_event_key`
 
+---
 
+### Foreign Keys (Fact Tables)
 
+**Rules**
+- Match the referenced dimension surrogate key name
+- Always suffixed with `_key`
+
+**Examples**
+- `athlete_key`
+- `game_key`
+- `noc_key`
+- `sport_event_key`
+
+---
+
+### Business Attributes
+
+**Rules**
+- Descriptive, human-readable
+- Avoid abbreviations unless industry standard
+
+**Examples**
+- `name`
+- `discipline`
+- `region`
+- `season`
+- `olympic_year`
+- `medal`
+
+---
+
+### 🔧 Technical Columns (`<dwh>`)
+
+**Purpose**
+Technical metadata columns used for lineage, auditing, and data quality.
+
+**Rules**
+- Prefixed with `dwh_`
+- Present in Bronze and Silver layers
+- Optional in Gold (by design)
+
+**Examples**
+- `dwh_create_date`
+
+---
+
+## Function Naming Conventions (Silver Layer)
+
+**Purpose**
+Encapsulate deterministic parsing and standardization logic.
+
+**Rules**
+- Functions exist only in Silver
+- Must be deterministic (`IMMUTABLE`)
+- Prefixed with `fn_`
+
+**Pattern**
+`silver.fn_<action>_<entity>`
+
+**Examples**
+- `silver.fn_parse_location`
+- `silver.fn_parse_date`
+
+---
+
+## View Naming Conventions (Gold BI Layer)
+
+**Purpose**
+Business-facing semantic views for analytics and BI tools.
+
+**Rules**
+- No transformation logic beyond aggregation
+- Grain must be documented
+- One business question per view
+
+**Pattern**
+`gold_bi.vw_<business_concept>`
+
+**Examples**
+- `gold_bi.vw_olympic_analysis`
+- `gold_bi.vw_athletes_by_noc`
+- `gold_bi.vw_medals_by_games`
+- `gold_bi.vw_vw_kpi_overview`
+
+--
+
+## Procedure Naming Conventions
+
+**Purpose**
+Operational logic such as exports and orchestration
+
+**Rules**
+- Action-oriented verbs
+- Schema-aligned with responsibility
+
+**Pattern**
+`<schema>.<action>_<object>`
+
+**Examples**
+- `gold_bi.export_gold_bi_views`
+
+---
+
+## Test & Quality Check Naming
+
+**Purpose**
+Validate assumptions and data quality across layers.
+
+**Rules**
+- Explicitly state what is being validated
+- Stored under `/tests`
+
+**Examples**
+- `tests/quality_checks_silver.sql`
+- `test/quality_checks_gold.sql`
+
+---
+
+## File Naming Conventions (Repository)
+
+- SQL scripts use descriptive, action-based names
+- One responsibility per file
+
+**Examples**
+- `init_database.sql`
+- `ddl_bronze.sql`
+
+---
+
+## Final Notes
+
+These conventions are designed to:
+- Support analytical correctness
+- Enable BI self-service
+- Scale to additional source systems
+- Communicate intent clearly to reviewers and recruiters
+
+Consistency is enforced by **design**, not tooling alone.
